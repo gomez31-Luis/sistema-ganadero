@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Registro de Partos</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho La Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Registro de Partos</span>
+      </nav>
+      <div class="user-info">
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"
+              ><i class="fas fa-cow"></i> Lista Individual</a
+            >
+            <a href="ver-reproductivo.html"
+              ><i class="fas fa-dna"></i> Lista Reproductiva</a
+            >
+            <a href="ver-partos.html"
+              ><i class="fas fa-baby-carriage"></i> Lista de Partos</a
+            >
+            <a href="ver-toros.html"
+              ><i class="fas fa-bullseye"></i> Lista de Toros</a
+            >
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"
+          ><i class="fas fa-arrow-left"></i> Volver</a
+        >
+      </div>
+    </header>
+
+    <main class="form-container">
+      <div class="form-card">
+        <div class="form-header">
+          <span
+            style="
+              display: inline-flex;
+              align-items: flex-end;
+              color: var(--primary-color);
+              font-size: 2.5rem;
+              margin-bottom: 15px;
+            "
+          >
+            <i class="fas fa-cow"></i>
+            <i
+              class="fas fa-cow"
+              style="font-size: 0.5em; margin-left: 5px; margin-bottom: 2px"
+            ></i>
+          </span>
+          <h2>Control de Vacas Paridas</h2>
+          <p>Registre el nacimiento de nuevas crías en el hato.</p>
+        </div>
+
+        <form action="/partos/guardar" method="POST" class="main-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="idVaca"
+                >ID Madre (Carabana) <span style="color: red">*</span></label
+              >
+              <div class="input-with-icon">
+                <i class="fas fa-search search-icon-inside"></i>
+                <input
+                  type="text"
+                  id="idVaca"
+                  name="idVaca"
+                  placeholder="Escriba ID o Nombre para buscar..."
+                  required
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="nombreVaca">Nombre de la Madre</label>
+              <input
+                type="text"
+                id="nombreVaca"
+                name="nombreVaca"
+                placeholder="Se llena automáticamente"
+                readonly
+                style="background: rgba(0, 0, 0, 0.05)"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fechaParto"
+                >Día de Parto <span style="color: red">*</span></label
+              >
+              <input type="date" id="fechaParto" name="fechaParto" required />
+            </div>
+            <div class="form-group">
+              <label for="sexoCria">Sexo de la Cría</label>
+              <select id="sexoCria" name="sexoCria">
+                <option value="Hembra">Hembra</option>
+                <option value="Macho">Macho</option>
+                <option value="Aborto">Aborto / Pérdida</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Nuevos campos para el becerro -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="idBecerro">ID Becerro (Caravana)</label>
+              <input
+                type="text"
+                id="idBecerro"
+                name="idBecerro"
+                placeholder="Ej: TER-001"
+              />
+            </div>
+            <div class="form-group">
+              <label for="nombreBecerro">Nombre del Becerro</label>
+              <input
+                type="text"
+                id="nombreBecerro"
+                name="nombreBecerro"
+                placeholder="Nombre de la cría"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombrePapa">Nombre del Papá</label>
+              <input
+                type="text"
+                id="nombrePapa"
+                name="nombrePapa"
+                placeholder="Nombre o ID del padre"
+              />
+            </div>
+            <div class="form-group">
+              <label for="observaciones">Observaciones</label>
+              <input
+                type="text"
+                id="observaciones"
+                name="observaciones"
+                placeholder="Detalles del parto, tamaño de la cría, estado de la madre, etc."
+              />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-secondary">Limpiar</button>
+            <button type="submit" class="btn-primary">Guardar Parto</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Notificación Toast Personalizada -->
+    <div id="toastNotification" class="toast">
+      <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+      <div class="toast-content">
+        <i class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span class="toast-title">¡Éxito!</span>
+          <span class="toast-text">Parto registrado con éxito.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/reproduccion.js"></script>
+    <script src="js/registro_parto.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>

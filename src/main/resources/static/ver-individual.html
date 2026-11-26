@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Lista de Animales</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho La Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Lista de Animales</span>
+      </nav>
+      <div class="user-info">
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"
+              ><i class="fas fa-cow"></i> Lista Individual</a
+            >
+            <a href="ver-reproductivo.html"
+              ><i class="fas fa-dna"></i> Lista Reproductiva</a
+            >
+            <a href="ver-partos.html">
+              <span style="display: inline-flex; align-items: flex-end">
+                <i class="fas fa-cow"></i
+                ><i
+                  class="fas fa-cow"
+                  style="font-size: 0.6em; margin-left: 2px"
+                ></i>
+              </span>
+              Lista de Partos
+            </a>
+            <a href="ver-becerros.html"
+              ><i class="fas fa-horse-head"></i> Lista de Becerros</a
+            >
+            <a href="ver-toros.html"
+              ><i class="fas fa-bullseye"></i> Lista de Toros</a
+            >
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"
+          ><i class="fas fa-arrow-left"></i> Volver</a
+        >
+      </div>
+    </header>
+
+    <main class="table-container">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">
+            <h2><i class="fas fa-cow"></i> Inventario de Ganado</h2>
+            <p>Listado completo de animales registrados individualmente.</p>
+          </div>
+          <div class="table-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Buscar por ID o Nombre..." />
+            </div>
+            <a href="registro-individual.html" class="btn-primary"
+              ><i class="fas fa-plus"></i> Nuevo Animal</a
+            >
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Carabana ID</th>
+                <th>Nombre</th>
+                <th>Raza</th>
+                <th>Nacimiento</th>
+                <th>Sexo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="animalTableBody">
+              <!-- Los datos se cargarán aquí dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-container" id="pagination-container"></div>
+      </div>
+    </main>
+
+    <!-- Notificación Toast -->
+    <div id="toastNotification" class="toast">
+      <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+      <div class="toast-content">
+        <i id="toastIcon" class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span id="toastTitle" class="toast-title">¡Éxito!</span>
+          <span id="toastText" class="toast-text">Operación realizada.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div id="editModal" class="modal">
+      <div class="modal-content glass" style="max-width: 700px">
+        <span class="close-modal" id="closeEdit">&times;</span>
+        <div class="form-header">
+          <i class="fas fa-edit"></i>
+          <h2>Editar Identificación</h2>
+          <p>Modifique los datos del animal seleccionado.</p>
+        </div>
+
+        <form action="/animales/guardar" method="POST" class="main-form" enctype="multipart/form-data">
+          <!-- Campo oculto para el ID de MongoDB -->
+          <input type="hidden" id="editId" name="id" />
+
+          <div style="display: flex; gap: 20px; align-items: flex-start;">
+            
+            <!-- Columna Izquierda: Foto -->
+            <div style="flex: 0 0 120px; display:flex; flex-direction:column; align-items:center;">
+                <label style="margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #555;">Foto</label>
+                <div id="editPhotoPreview" style="width:120px; height:120px; border-radius:8px; border:2px dashed #ccc; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:10px; background: rgba(0,0,0,0.02);">
+                    <i class="fas fa-camera" style="color:#ccc; font-size:32px;"></i>
+                </div>
+                <input type="file" id="editAnimalPhoto" name="animalPhoto" accept="image/*" style="display:none;">
+                <button type="button" class="btn-secondary" onclick="document.getElementById('editAnimalPhoto').click()" style="padding: 6px 12px; font-size: 0.85rem; width:100%; border-radius:6px;">
+                    <i class="fas fa-upload"></i> Cambiar
+                </button>
+            </div>
+
+            <!-- Columna Derecha: Campos -->
+            <div style="flex: 1;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="editCarabana">Carabana ID</label>
+                  <input type="text" id="editCarabana" name="carabana" value="AR-1234" required />
+                </div>
+                <div class="form-group">
+                  <label for="editNombre">Nombre</label>
+                  <input type="text" id="editNombre" name="nombre" value="Estrella" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="editRaza">Raza</label>
+                  <input type="text" id="editRaza" name="raza" value="Holando" />
+                </div>
+                <div class="form-group">
+                  <label for="editNacimiento">Fecha de Nacimiento</label>
+                  <input type="date" id="editNacimiento" name="nacimiento" value="2022-05-15" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="editSexo">Sexo</label>
+                  <select id="editSexo" name="sexo" required>
+                    <option value="macho">Macho</option>
+                    <option value="hembra" selected>Hembra</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editEstado">Estado</label>
+                  <select id="editEstado" name="estado" required>
+                    <option value="activa" selected>Activa</option>
+                    <option value="vendida">Vendida</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              Actualizar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="deleteConfirmModal" class="modal">
+      <div
+        class="modal-content glass"
+        style="max-width: 400px; text-align: center"
+      >
+        <div class="form-header" style="margin-bottom: 20px">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="color: #e74c3c; font-size: 3rem"
+          ></i>
+          <h2 style="margin-top: 15px">¿Estás seguro?</h2>
+          <p>
+            Esta acción eliminará el registro de forma permanente y no se puede
+            deshacer.
+          </p>
+        </div>
+        <div class="form-actions" style="justify-content: center; gap: 15px">
+          <button type="button" class="btn-secondary" id="cancelDelete">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            id="confirmDelete"
+            style="background: #e74c3c"
+          >
+            Eliminar Ahora
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para ver Foto en Grande -->
+    <div id="imageModal" class="modal" style="background: rgba(0,0,0,0.85); z-index: 10000;">
+      <div style="position: relative; max-width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center; margin: auto; top: 50%; transform: translateY(-50%);">
+        <span id="closeImageModal" style="color: white; font-size: 2.5rem; position: absolute; top: -40px; right: 0; cursor: pointer;">&times;</span>
+        <img id="fullSizeImage" src="" alt="Foto Animal" style="max-width: 100%; max-height: 85vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      </div>
+    </div>
+
+    <!-- Modal para ver historial de Crías -->
+    <div id="criasModal" class="modal">
+      <div class="modal-content glass" style="max-width: 600px;">
+        <span class="close-modal" id="closeCriasModal">&times;</span>
+        <div class="form-header">
+          <i class="fas fa-baby-carriage" style="color: #8e44ad;"></i>
+          <h2>Historial de Crías</h2>
+          <p id="criasModalSubtitle">Cargando...</p>
+        </div>
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>Fecha de Parto</th>
+                <th>ID Cría</th>
+                <th>Nombre Cría</th>
+                <th>Sexo</th>
+              </tr>
+            </thead>
+            <tbody id="criasTableBody">
+              <!-- Datos de crías inyectados dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        <!-- Paginación para crías -->
+        <div class="pagination-container" id="crias-pagination-container" style="margin-top: 15px;"></div>
+        
+        <div class="form-actions" style="margin-top: 20px;">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('criasModal').style.display='none'">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/animales.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Lista de Becerros</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho la Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Lista de Becerros</span>
+      </nav>
+      <div class="user-info">
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"><i class="fas fa-cow"></i> Lista Individual</a>
+            <a href="ver-reproductivo.html"><i class="fas fa-dna"></i> Lista Reproductiva</a>
+            <a href="ver-partos.html"><i class="fas fa-baby-carriage"></i> Lista de Partos</a>
+            <a href="ver-becerros.html"><i class="fas fa-horse-head"></i> Lista de Becerros</a>
+            <a href="ver-toros.html"><i class="fas fa-bullseye"></i> Lista de Toros</a>
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"><i class="fas fa-arrow-left"></i> Volver</a>
+      </div>
+    </header>
+
+    <main class="table-container">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">
+            <h2>
+              <span style="display: inline-flex; align-items: flex-end; color: #8e44ad;">
+                <i class="fas fa-horse-head"></i>
+              </span>
+              Inventario de Becerros
+            </h2>
+            <p>Control de crías nacidas y su estado actual en el hato.</p>
+          </div>
+          <div class="table-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchBecerro" placeholder="Buscar por ID o Nombre..." />
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>ID Becerro</th>
+                <th>Nombre</th>
+                <th>Sexo</th>
+                <th>Fecha Nacimiento</th>
+                <th>Madre</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="becerrosTableBody">
+              <!-- Datos cargados dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-container" id="pagination-container"></div>
+      </div>
+    </main>
+
+    <!-- Notificación Toast -->
+    <div id="toastNotification" class="toast">
+      <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+      <div class="toast-content">
+        <i id="toastIcon" class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span id="toastTitle" class="toast-title">¡Éxito!</span>
+          <span id="toastText" class="toast-text">Operación realizada.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <!-- Modal de Edición de Estado -->
+    <div id="editBecerroModal" class="modal">
+      <div class="modal-content glass" style="max-width: 400px">
+        <span class="close-modal" id="closeEditBecerro">&times;</span>
+        <div class="form-header">
+          <i class="fas fa-edit"></i>
+          <h2>Editar Estado</h2>
+          <p>Actualizar el estado del becerro.</p>
+        </div>
+
+        <form id="formEditBecerro" class="main-form">
+          <input type="hidden" id="editBecerroId" name="id" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editEstadoBecerro">Estado Actual</label>
+              <select id="editEstadoBecerro" name="estadoBecerro" required>
+                <option value="activo">Activo</option>
+                <option value="vendido">Vendido</option>
+                <option value="fallecido">Fallecido</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions" style="justify-content: center;">
+            <button type="submit" class="btn-primary">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/becerros_lista.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Lista de Usuarios</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho la Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Lista de Usuarios</span>
+      </nav>
+      <div class="user-info">
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"><i class="fas fa-cow"></i> Lista Individual</a>
+            <a href="ver-reproductivo.html"><i class="fas fa-dna"></i> Lista Reproductiva</a>
+            <a href="ver-partos.html"><i class="fas fa-baby-carriage"></i> Lista de Partos</a>
+            <a href="ver-becerros.html"><i class="fas fa-horse-head"></i> Lista de Becerros</a>
+            <a href="ver-toros.html"><i class="fas fa-bullseye"></i> Lista de Toros</a>
+            <a href="ver-usuarios.html"><i class="fas fa-users"></i> Lista de Usuarios</a>
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"><i class="fas fa-arrow-left"></i> Volver</a>
+      </div>
+    </header>
+
+    <main class="table-container">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">
+            <h2><i class="fas fa-users"></i> Gestión de Usuarios</h2>
+            <p>Historial y control de las cuentas registradas en el sistema.</p>
+          </div>
+          <div class="table-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchUsuario" placeholder="Buscar por usuario..." />
+            </div>
+            <!-- Botón opcional si se quiere agregar un modal de registro -->
+            <!-- <button class="btn-primary" id="btnNuevoUsuario"><i class="fas fa-user-plus"></i> Nuevo Usuario</button> -->
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>Nombre Completo</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="usuarioTableBody">
+              <!-- Datos cargados dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Paginación -->
+        <div class="pagination-container" id="pagination-container"></div>
+      </div>
+    </main>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="deleteConfirmModal" class="modal">
+      <div class="modal-content glass" style="max-width: 400px; text-align: center">
+        <div class="form-header" style="margin-bottom: 20px">
+          <i class="fas fa-exclamation-triangle" style="color: #e74c3c; font-size: 3rem"></i>
+          <h2 style="margin-top: 15px">¿Estás seguro?</h2>
+          <p>¿Deseas eliminar permanentemente a este usuario?</p>
+        </div>
+        <div class="form-actions" style="justify-content: center; gap: 15px">
+          <button type="button" class="btn-secondary" id="cancelDelete">Cancelar</button>
+          <button type="button" class="btn-primary" id="confirmDelete" style="background: #e74c3c">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notificación Toast -->
+    <div id="toastNotification" class="toast">
+      <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+      <div class="toast-content">
+        <i id="toastIcon" class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span id="toastTitle" class="toast-title">¡Éxito!</span>
+          <span id="toastText" class="toast-text">Operación realizada.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/usuarios_lista.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>

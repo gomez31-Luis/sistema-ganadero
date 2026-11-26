@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Historial Reproductivo</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho la Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Historial Reproductivo</span>
+      </nav>
+      <div class="user-info">
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"
+              ><i class="fas fa-cow"></i> Lista Individual</a
+            >
+            <a href="ver-reproductivo.html"
+              ><i class="fas fa-dna"></i> Lista Reproductiva</a
+            >
+            <a href="ver-partos.html">
+              <span style="display: inline-flex; align-items: flex-end">
+                <i class="fas fa-cow"></i
+                ><i
+                  class="fas fa-cow"
+                  style="font-size: 0.6em; margin-left: 2px"
+                ></i>
+              </span>
+              Lista de Partos
+            </a>
+            <a href="ver-becerros.html"
+              ><i class="fas fa-horse-head"></i> Lista de Becerros</a
+            >
+            <a href="ver-toros.html"
+              ><i class="fas fa-bullseye"></i> Lista de Toros</a
+            >
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"
+          ><i class="fas fa-arrow-left"></i> Volver</a
+        >
+      </div>
+    </header>
+
+    <main class="table-container">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">
+            <h2><i class="fas fa-dna"></i> Control de Reproducción</h2>
+            <p>Seguimiento de inseminaciones y partos programados.</p>
+          </div>
+          <div class="table-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Buscar por ID Vaca..." />
+            </div>
+            <a href="registro-reproductivo.html" class="btn-primary"
+              ><i class="fas fa-plus"></i> Nuevo Registro</a
+            >
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>ID Vaca</th>
+                <th>Nombre</th>
+                <th>F. Celo</th>
+                <th>F. Inseminación</th>
+                <th>Toro / Semen</th>
+                <th>F. Parto (rango 284 días)</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="reproTableBody">
+              <!-- Datos cargados dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-container" id="pagination-container"></div>
+      </div>
+    </main>
+
+    <!-- Notificación Toast -->
+    <div id="toastNotification" class="toast">
+      <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+      <div class="toast-content">
+        <i id="toastIcon" class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span id="toastTitle" class="toast-title">¡Éxito!</span>
+          <span id="toastText" class="toast-text">Operación realizada.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="deleteConfirmModal" class="modal">
+      <div
+        class="modal-content glass"
+        style="max-width: 400px; text-align: center"
+      >
+        <div class="form-header" style="margin-bottom: 20px">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="color: #e74c3c; font-size: 3rem"
+          ></i>
+          <h2 style="margin-top: 15px">¿Estás seguro?</h2>
+          <p>
+            ¿Deseas eliminar este registro reproductivo? Esta acción no se puede
+            deshacer.
+          </p>
+        </div>
+        <div class="form-actions" style="justify-content: center; gap: 15px">
+          <button type="button" class="btn-secondary" id="cancelDelete">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            id="confirmDelete"
+            style="background: #e74c3c"
+          >
+            Eliminar Ahora
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Edición Reproductiva -->
+    <div id="editReproModal" class="modal">
+      <div class="modal-content glass" style="max-width: 700px">
+        <span class="close-modal" id="closeEditRepro">&times;</span>
+        <div class="form-header">
+          <i class="fas fa-edit"></i>
+          <h2>Editar Control Reproductivo</h2>
+          <p>Modifique los datos del evento seleccionado.</p>
+        </div>
+
+        <form action="/reproduccion/guardar" method="POST" class="main-form">
+          <input type="hidden" id="editReproId" name="id" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editIdVaca">ID Animal (Carabana)</label>
+              <input
+                type="text"
+                id="editIdVaca"
+                name="idVaca"
+                readonly
+                style="background: rgba(0, 0, 0, 0.1)"
+              />
+            </div>
+            <div class="form-group">
+              <label for="editNombreVaca">Nombre del Animal</label>
+              <input
+                type="text"
+                id="editNombreVaca"
+                name="nombreVaca"
+                readonly
+                style="background: rgba(0, 0, 0, 0.1)"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editFechaCelo">Fecha de Celo</label>
+              <input type="date" id="editFechaCelo" name="fechaCelo" />
+            </div>
+            <div class="form-group">
+              <label for="editFechaInseminacion">Fecha de Inseminación</label>
+              <input
+                type="date"
+                id="editFechaInseminacion"
+                name="fechaInseminacion"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editToroSemen">Toro / Semen</label>
+              <input type="text" id="editToroSemen" name="toroSemen" />
+            </div>
+            <div class="form-group">
+              <label for="editFechaParto">Fecha de Parto (Prevista)</label>
+              <input
+                type="date"
+                id="editFechaParto"
+                name="fechaParto"
+                readonly
+                style="background: rgba(0, 0, 0, 0.1)"
+              />
+              <small style="color: #666"
+                >Se recalculará al guardar si cambia la inseminación.</small
+              >
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              Actualizar Registro
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/reproduccion_lista.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>

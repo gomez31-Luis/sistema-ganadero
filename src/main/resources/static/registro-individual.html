@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Registro Individual</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho La Bendición<span> A LA VANGAURDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Registro Individual</span>
+      </nav>
+        <div class="user-info">
+            <div class="dropdown">
+                <button class="dropdown-btn">
+                    <i class="fas fa-list"></i> Ver Registros <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="ver-individual.html"><i class="fas fa-cow"></i> Lista Individual</a>
+                    <a href="ver-reproductivo.html"><i class="fas fa-dna"></i> Lista Reproductiva</a>
+                    <a href="ver-partos.html">
+                      <span style="display:inline-flex; align-items:flex-end;">
+                        <i class="fas fa-cow"></i><i class="fas fa-cow" style="font-size: 0.6em; margin-left: 2px;"></i>
+                      </span> 
+                      Lista de Partos
+                    </a>
+                    <a href="ver-becerros.html"><i class="fas fa-horse-head"></i> Lista de Becerros</a>
+                    <a href="ver-toros.html"><i class="fas fa-bullseye"></i> Lista de Toros</a>
+                </div>
+            </div>
+            <a href="menu.html" class="btn-back"><i class="fas fa-arrow-left"></i> Volver</a>
+        </div>
+
+      </div>
+    </header>
+
+    <main class="form-container">
+      <div class="form-card">
+        <div class="form-header">
+          <i class="fas fa-id-card"></i>
+          <h2>Identificación Animal</h2>
+          <p>Complete los datos para el registro individual en el hato.</p>
+        </div>
+
+        <form action="/animales/guardar" method="POST" class="main-form" enctype="multipart/form-data">
+
+          <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+            
+            <!-- Columna Izquierda: Foto -->
+            <div style="flex: 0 0 160px; display:flex; flex-direction:column; align-items:center; background: #fff; padding: 20px 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <label style="margin-bottom: 15px; font-weight: 600; font-size: 0.95rem; color: #555;">Foto del Animal</label>
+                <div class="photo-preview" id="photoPreview" style="width: 130px; height: 130px; margin-bottom: 15px; border: 2px dashed #ccc; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f9f9f9; cursor: pointer; overflow: hidden; transition: 0.3s;" onclick="document.getElementById('animalPhoto').click()">
+                    <i class="fas fa-camera" style="font-size: 36px; color: #ccc; margin-bottom: 8px;"></i>
+                    <p style="font-size: 0.75rem; color: #999; text-align: center; margin: 0; line-height: 1.2;">Click para<br>subir foto</p>
+                </div>
+                <input type="file" id="animalPhoto" name="animalPhoto" accept="image/*" style="display: none;">
+                <button type="button" class="btn-secondary" onclick="document.getElementById('animalPhoto').click()" style="width: 100%; font-size: 0.8rem; padding: 8px;">
+                    <i class="fas fa-upload"></i> Explorar
+                </button>
+            </div>
+
+            <!-- Columna Derecha: Campos del Formulario -->
+            <div style="flex: 1; min-width: 300px;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="carabana">Carabana ID</label>
+                  <input type="text" id="carabana" name="carabana" placeholder="Ej: AR-1234" required />
+                  <span id="carabanaMsg" style="font-size: 0.8rem; margin-top: 4px; display: none;"></span>
+                </div>
+                <div class="form-group">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" id="nombre" name="nombre" placeholder="Nombre del animal" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="raza">Raza</label>
+                  <input type="text" id="raza" name="raza" placeholder="Ej: Holandes, Charolais..." />
+                </div>
+                <div class="form-group">
+                  <label for="nacimiento">Fecha de Nacimiento</label>
+                  <input type="date" id="nacimiento" name="nacimiento" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nombreMadre">Nombre de la Madre</label>
+                  <input type="text" id="nombreMadre" name="nombreMadre" placeholder="Nombre o ID de la madre" />
+                </div>
+                <div class="form-group">
+                  <label for="nombrePadre">Nombre del Padre</label>
+                  <input type="text" id="nombrePadre" name="nombrePadre" placeholder="Nombre o ID del padre" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="sexo">Sexo</label>
+                  <select id="sexo" name="sexo" required>
+                    <option value="" disabled selected>Seleccione sexo</option>
+                    <option value="macho">Macho</option>
+                    <option value="hembra">Hembra</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="estado">Estado</label>
+                  <select id="estado" name="estado" required>
+                    <option value="activa">Activa</option>
+                    <option value="vendida">Vendida</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button type="reset" class="btn-secondary">Limpiar</button>
+            <button type="submit" class="btn-primary">Guardar Registro</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Notificación Toast Personalizada -->
+    <div id="toastNotification" class="toast">
+        <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <div class="toast-message">
+                <span class="toast-title">¡Éxito!</span>
+                <span class="toast-text">Registro de animal guardado con éxito.</span>
+            </div>
+        </div>
+        <div class="toast-progress"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/registro_individual.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>
+
+

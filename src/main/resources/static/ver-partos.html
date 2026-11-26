@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Lista de Partos</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho la Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Lista de Partos</span>
+      </nav>
+      <div class="user-info">
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"
+              ><i class="fas fa-cow"></i> Lista Individual</a
+            >
+            <a href="ver-reproductivo.html"
+              ><i class="fas fa-dna"></i> Lista Reproductiva</a
+            >
+            <a href="ver-partos.html"
+              ><i class="fas fa-baby-carriage"></i> Lista de Partos</a
+            >
+            <a href="ver-becerros.html"
+              ><i class="fas fa-horse-head"></i> Lista de Becerros</a
+            >
+            <a href="ver-toros.html"
+              ><i class="fas fa-bullseye"></i> Lista de Toros</a
+            >
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"
+          ><i class="fas fa-arrow-left"></i> Volver</a
+        >
+      </div>
+    </header>
+
+    <main class="table-container">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">
+            <h2>
+              <span style="display: inline-flex; align-items: flex-end"
+                ><i class="fas fa-cow"></i
+                ><i
+                  class="fas fa-cow"
+                  style="font-size: 0.6em; margin-left: 4px; margin-bottom: 2px"
+                ></i
+              ></span>
+              Control de Vacas Paridas
+            </h2>
+            <p>Historial de nacimientos y estado de las vacas madre.</p>
+          </div>
+          <div class="table-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="searchParto"
+                placeholder="Buscar por ID Vaca..."
+              />
+            </div>
+            <a href="registro-parto.html" class="btn-primary"
+              ><i class="fas fa-plus"></i> Registrar Parto</a
+            >
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>ID Madre</th>
+                <th>Nombre Madre</th>
+                <th>Día de Parto</th>
+                <th>ID Becerro</th>
+                <th>Nombre Becerro</th>
+                <th>Sexo Cría</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="partoTableBody">
+              <!-- Datos cargados dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-container" id="pagination-container"></div>
+      </div>
+    </main>
+
+    <!-- Notificación Toast -->
+    <div id="toastNotification" class="toast">
+      <button class="toast-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+      <div class="toast-content">
+        <i id="toastIcon" class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span id="toastTitle" class="toast-title">¡Éxito!</span>
+          <span id="toastText" class="toast-text">Operación realizada.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="deleteConfirmModal" class="modal">
+      <div
+        class="modal-content glass"
+        style="max-width: 400px; text-align: center"
+      >
+        <div class="form-header" style="margin-bottom: 20px">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="color: #e74c3c; font-size: 3rem"
+          ></i>
+          <h2 style="margin-top: 15px">¿Estás seguro?</h2>
+          <p>¿Deseas eliminar este registro de parto?</p>
+        </div>
+        <div class="form-actions" style="justify-content: center; gap: 15px">
+          <button type="button" class="btn-secondary" id="cancelDelete">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            id="confirmDelete"
+            style="background: #e74c3c"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Edición de Parto -->
+    <div id="editPartoModal" class="modal">
+      <div class="modal-content glass" style="max-width: 700px">
+        <span class="close-modal" id="closeEditParto">&times;</span>
+        <div class="form-header">
+          <i class="fas fa-edit"></i>
+          <h2>Editar Parto</h2>
+          <p>Modifique los datos del nacimiento.</p>
+        </div>
+
+        <form action="/partos/guardar" method="POST" class="main-form">
+          <input type="hidden" id="editPartoId" name="id" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editIdVaca">ID Madre</label>
+              <input
+                type="text"
+                id="editIdVaca"
+                name="idVaca"
+                readonly
+                style="background: rgba(0, 0, 0, 0.1)"
+              />
+            </div>
+            <div class="form-group">
+              <label for="editNombreVaca">Nombre Madre</label>
+              <input
+                type="text"
+                id="editNombreVaca"
+                name="nombreVaca"
+                readonly
+                style="background: rgba(0, 0, 0, 0.1)"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editFechaParto">Día de Parto</label>
+              <input
+                type="date"
+                id="editFechaParto"
+                name="fechaParto"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="editSexoCria">Sexo Cría</label>
+              <select id="editSexoCria" name="sexoCria">
+                <option value="Hembra">Hembra</option>
+                <option value="Macho">Macho</option>
+                <option value="Aborto">Aborto / Pérdida</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Campos para el becerro en edición -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editIdBecerro">ID Becerro (Caravana)</label>
+              <input type="text" id="editIdBecerro" name="idBecerro" />
+            </div>
+            <div class="form-group">
+              <label for="editNombreBecerro">Nombre del Becerro</label>
+              <input type="text" id="editNombreBecerro" name="nombreBecerro" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="grid-column: span 2">
+              <label for="editObservaciones">Observaciones</label>
+              <input type="text" id="editObservaciones" name="observaciones" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              Actualizar Registro
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/partos_lista.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>

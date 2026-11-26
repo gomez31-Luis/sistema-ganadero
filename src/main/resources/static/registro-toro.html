@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Ganadero | Registro de Toros de Compra</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <div class="logo">Rancho La Bendición<span> A LA VANGUARDIA</span></div>
+      <nav class="nav-breadcrumb">
+        <a href="menu.html">Menú</a> / <span>Registro de Toros</span>
+      </nav>
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            <i class="fas fa-list"></i> Ver Registros
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="ver-individual.html"><i class="fas fa-cow"></i> Lista Individual</a>
+            <a href="ver-reproductivo.html"><i class="fas fa-dna"></i> Lista Reproductiva</a>
+            <a href="ver-partos.html"><i class="fas fa-baby-carriage"></i> Lista de Partos</a>
+            <a href="ver-becerros.html"><i class="fas fa-horse-head"></i> Lista de Becerros</a>
+            <a href="ver-toros.html"><i class="fas fa-bullseye"></i> Lista de Toros</a>
+          </div>
+        </div>
+        <a href="menu.html" class="btn-back"
+          ><i class="fas fa-arrow-left"></i> Volver</a
+        >
+    </header>
+
+    <main class="form-container">
+      <div class="form-card">
+        <div class="form-header">
+          <span
+            style="
+              display: inline-flex;
+              align-items: flex-end;
+              color: var(--primary-color);
+              font-size: 2.5rem;
+              margin-bottom: 15px;
+            "
+          >
+            <i class="fas fa-bullseye"></i>
+          </span>
+          <h2>Control de Toros de Compra</h2>
+          <p>Registre los toros adquiridos.</p>
+        </div>
+
+        <form action="/toros/guardar" method="POST" class="main-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="idToro"
+                >Caravana ID <span style="color: red">*</span></label
+              >
+              <input
+                type="text"
+                id="idToro"
+                name="idToro"
+                placeholder="Ej: TOR-001"
+                required
+                autocomplete="off"
+              />
+              <span id="carabanaMsg" style="display: none; font-size: 0.85rem; margin-top: 5px;"></span>
+            </div>
+            <div class="form-group">
+              <label for="fechaCompra"
+                >Fecha de Compra <span style="color: red">*</span></label
+              >
+              <input type="date" id="fechaCompra" name="fechaCompra" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pesoKg"
+                >Peso (Kg) <span style="color: red">*</span></label
+              >
+              <input
+                type="number"
+                step="0.01"
+                id="pesoKg"
+                name="pesoKg"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="precio"
+                >Precio ($) <span style="color: red">*</span></label
+              >
+              <input
+                type="number"
+                step="0.01"
+                id="precio"
+                name="precio"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="kgGanados">Kg Ganados</label>
+              <input
+                type="number"
+                step="0.01"
+                id="kgGanados"
+                name="kgGanados"
+                placeholder="Ej: 50.5"
+              />
+            </div>
+            <div class="form-group">
+              <label for="fechaSalida">Fecha de Salida</label>
+              <input type="date" id="fechaSalida" name="fechaSalida" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="grid-column: span 2">
+              <label for="estado"
+                >Estado <span style="color: red">*</span></label
+              >
+              <select id="estado" name="estado" required>
+                <option value="Activo">Activo</option>
+                <option value="Vendido">Vendido</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-secondary">Limpiar</button>
+            <button type="submit" class="btn-primary">Guardar Toro</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Notificación Toast Personalizada -->
+    <div id="toastNotification" class="toast">
+      <button
+        class="toast-close"
+        onclick="this.parentElement.classList.remove('active')"
+      >
+        &times;
+      </button>
+      <div class="toast-content">
+        <i class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span class="toast-title">¡Éxito!</span>
+          <span class="toast-text">Toro registrado con éxito.</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/registro_toro.js"></script>
+      <script src="js/session_timeout.js"></script></body>
+</html>
